@@ -1,1 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# Django static/compiled files
+staticfiles/
+media/
+
+# Secret configs
 .env
+
+# Editor/IDE
+.vscode/
+.idea/
+
+# macOS / Linux
+.DS_Store
+*.swp
+*.swo
+
+# Logs
+*.log
