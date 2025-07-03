@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Guide, Casino, Bonus
+from .models import Guide, Casino, Bonus, CasinoFeature
 
 
 class GuideSerializer(serializers.ModelSerializer):
@@ -18,7 +18,13 @@ class CasinoListSerializer(serializers.ModelSerializer):
                'freespins', 'wager',
 		]
           
+class CasinoFeatureSerializer(serializers.ModelSerializer):
+     class Meta:
+          model = CasinoFeature
+          fields = ['text']
+          
 class CasinoSerializer(serializers.ModelSerializer):
+     features = CasinoFeatureSerializer(many=True, read_only=True)
      class Meta:
           model = Casino
           fields = '__all__'

@@ -35,7 +35,16 @@ class Casino(models.Model):
           
      def __str__(self):
          return self.name
-
+    
+    
+class CasinoFeature(models.Model):
+     casino = models.ForeignKey('Casino', on_delete=models.CASCADE, \
+          related_name='features')
+     text = models.CharField(max_length=255)
+     
+     def __str__(self):
+         return f"{self.casino.name} - {self.text}"
+	
 
 class Bonus(models.Model):
      BONUS_TYPES = [

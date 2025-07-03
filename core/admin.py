@@ -1,17 +1,23 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Casino, Bonus, Slots, CasinoSlots, Review, Guide
+from .models import Casino, Bonus, Slots, CasinoSlots, Review, \
+     Guide, CasinoFeature
 
 
 class BonusInline(admin.TabularInline): # Или admin.StackedInline для вертикального вида
      model = Bonus
      extra = 1 # Показывать пустую форму для нового бонуса
+     
+     
+class CasinoFeatureInline(admin.TabularInline):
+     model = CasinoFeature
+     extra = 1
 
 @admin.register(Casino)
 class CasinoAdmin(admin.ModelAdmin):
      list_display = ("name", "license_type", "rating", \
           "min_deposit", "payout_speed")
-     inlines = [BonusInline]
+     inlines = [BonusInline, CasinoFeatureInline]
      prepopulated_fields = {"slug": ("name",)}
      search_fields = ("name", "license_type")
      list_filter = ("license_type",)
