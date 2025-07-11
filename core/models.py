@@ -28,7 +28,7 @@ class Casino(models.Model):
           if not self.slug:
                self.slug = slugify(self.name)
           if not self.meta_title:
-               self.meta_title = self.title
+               self.meta_title = self.name
           if not self.meta_description and self.description:
                self.meta_description = self.description[:160]
           super().save(*args, **kwargs)
