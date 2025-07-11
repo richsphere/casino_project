@@ -7,6 +7,7 @@ from .models import Casino, Bonus, Slots, CasinoSlots, \
 class BonusInline(admin.TabularInline): # Или admin.StackedInline для вертикального вида
      model = Bonus
      extra = 1 # Показывать пустую форму для нового бонуса
+     fields = ("type", "value")
      
      
 class CasinoFeatureInline(admin.TabularInline):

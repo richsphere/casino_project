@@ -91,29 +91,20 @@ class CasinoReview(models.Model):
 
 
 class Bonus(models.Model):
-     BONUS_TYPES = [
-		('no_deposit', 'No Deposit'),
-		('deposit', 'Deposit Bonus'),
-		('cashback', 'Cashback'),
-		('freespins', 'Free Spins'),
-	]
-     
-     casino = models.ForeignKey(Casino, on_delete=models.CASCADE, \
-          related_name='bonuses')
-     bonus_type = models.CharField(max_length=50, choices=BONUS_TYPES)
-     amount = models.CharField(max_length=100)
-     wagering = models.CharField(max_length=100)
-     bonus_code = models.CharField(max_length=100, \
-          blank=True, null=True)
-     terms_url = models.URLField(blank=True, null=True)
-     is_exclusive = models.BooleanField(default=False)
-     
-     class Meta:
-          verbose_name = "Bonus"
-          verbose_name_plural = "Bonuses"
-     
-     def __str__(self):
-         return f"{self.get_bonus_type_display()} - {self.amount}"
+    BONUS_TYPES = [
+        ('freespins', 'Free Spins'),
+        ('wager', 'Wager'),
+        ('percent', 'Bonus Percent'),
+        ('amount', 'Bonus Amount'),
+    ]
+
+    casino = models.ForeignKey(Casino, on_delete=models.CASCADE)
+    type = models.CharField(max_length=20, choices=BONUS_TYPES, \
+         default='freespins')
+    value = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.get_type_display()}: {self.value}"
 
 
 class Slots(models.Model):
