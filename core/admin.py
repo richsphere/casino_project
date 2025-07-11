@@ -21,7 +21,7 @@ class CasinoReviewInline(admin.StackedInline):
 @admin.register(Casino)
 class CasinoAdmin(admin.ModelAdmin):
      list_display = ("name", "license_type", "rating", \
-          "min_deposit", "payout_speed")
+          "min_deposit", "payout_speed", "logo_thumbnail")
      inlines = [BonusInline, CasinoFeatureInline, CasinoReviewInline]
      prepopulated_fields = {"slug": ("name",)}
      search_fields = ("name", "license_type")
