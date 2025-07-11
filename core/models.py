@@ -2,6 +2,25 @@ from django.db import models
 from django.utils.text import slugify
 
 
+class PaymentMethod(models.Model):
+     METHOD_TYPES = (
+          ('deposit', 'Deposit'),
+          ('withdrawal', 'Withdrawal')
+     )
+     name = models.CharField(max_length=100)
+     method_type = models.CharField(max_length=20, choices=METHOD_TYPES)
+     
+     def __str__(self):
+         return self.name
+   
+   
+class Tag(models.Model):
+     name = models.CharField(max_length=100)
+     
+     def __str__(self):
+         return self.name
+    
+    
 class Casino(models.Model):
      name = models.CharField(max_length=255)
      slug = models.SlugField(unique=True)
@@ -18,11 +37,17 @@ class Casino(models.Model):
      meta_title = models.CharField(max_length=255, blank=True, null=True)
      meta_description = models.TextField(blank=True, null=True)
      
-     # Доп поля для бонуса
-     freespins = models.PositiveIntegerField(default=0)
-     wager = models.CharField(max_length=50, blank=True)
-     bonus_percent = models.PositiveIntegerField(default=0)
-     bonus_amount = models.PositiveIntegerField(default=0, help_text="NOK or EUR")
+     
+     deposit_methods = models.ManyToManyField("PaymentMethod", \
+          related_name="casinos_with_deposit", \
+               limit_choices_to={'method_type': 'deposit'},
+               blank=True)
+     withdrawal_methods = models.ManyToManyField("PaymentMethod", \
+          related_name="casinos_with_withdrawal", \
+               limit_choices_to={'method_type': 'withdrawal'},
+               blank=True)
+     tags = models.ManyToManyField(Tag, blank=True)
+     
      
      def save(self, *args, **kwargs):
           if not self.slug:
@@ -63,8 +88,7 @@ class CasinoReview(models.Model):
           
      def __str__(self):
          return f"{self.casino.name} Review"
-     
-	
+
 
 class Bonus(models.Model):
      BONUS_TYPES = [
@@ -143,10 +167,3 @@ class Guide(models.Model):
           
      def __str__(self):
          return self.title
-	
-     
-	
-	
-	
-     
-	
