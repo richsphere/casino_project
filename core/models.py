@@ -4,7 +4,7 @@ from django.utils.text import slugify
 
 class Casino(models.Model):
      name = models.CharField(max_length=255)
-     slug = models.SlugField(unique=True, blank=True)
+     slug = models.SlugField(unique=True)
      description = models.TextField()
      website_url = models.URLField()
      logo = models.ImageField(upload_to='logos/')
@@ -50,7 +50,6 @@ class CasinoReview(models.Model):
      casino = models.OneToOneField("Casino", on_delete=models.CASCADE, \
           related_name="review")
      title = models.CharField(max_length=255, default="Review")
-     slug = models.SlugField(unique=True)
      
      content_markdown = models.TextField(blank=True)
      content_blocks = models.JSONField(default=list, blank=True)
