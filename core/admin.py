@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Casino, Bonus, Slots, CasinoSlots, Review, \
-     Guide, CasinoFeature
+from .models import Casino, Bonus, Slots, CasinoSlots, \
+     Guide, CasinoFeature, CasinoReview
 
 
 class BonusInline(admin.TabularInline): # Или admin.StackedInline для вертикального вида
@@ -12,12 +12,17 @@ class BonusInline(admin.TabularInline): # Или admin.StackedInline для ве
 class CasinoFeatureInline(admin.TabularInline):
      model = CasinoFeature
      extra = 1
+     
+     
+class CasinoReviewInline(admin.StackedInline):
+     model = CasinoReview
+     extra = 0 #  Не показывать пустых форм
 
 @admin.register(Casino)
 class CasinoAdmin(admin.ModelAdmin):
      list_display = ("name", "license_type", "rating", \
           "min_deposit", "payout_speed")
-     inlines = [BonusInline, CasinoFeatureInline]
+     inlines = [BonusInline, CasinoFeatureInline, CasinoReviewInline]
      prepopulated_fields = {"slug": ("name",)}
      search_fields = ("name", "license_type")
      list_filter = ("license_type",)
@@ -28,16 +33,8 @@ class CasinoAdmin(admin.ModelAdmin):
                     obj.logo.url)
           return "-"
      logo_thumbnail.short_description = "Logo"
-     
 
-@admin.register(Bonus)
-class BonusAdmin(admin.ModelAdmin):
-     list_display = ("casino", "bonus_type", "amount", \
-          "wagering", "is_exclusive")
-     list_filter = ("bonus_type", "is_exclusive")
-     search_fields = ("casino__name", "bonus_code")
-     
-     
+
 @admin.register(Slots)
 class SlotsAdmin(admin.ModelAdmin):
      list_display = ("name", "provider", "rtp", "volatility")
@@ -49,13 +46,7 @@ class CasinoSlotsAdmin(admin.ModelAdmin):
      list_display = ("casino", "slot")
      search_fields = ("casino__name", "slot__name")
      autocomplete_fields = ["casino", "slot"]
-     
-     
-@admin.register(Review)
-class ReviewAdmin(admin.ModelAdmin):
-     list_display = ("casino", "author", "rating", "created_at")
-     list_filter = ("rating", "created_at")
-     search_fields = ("casino__name", "author")
+
      
      
 @admin.register(Guide)

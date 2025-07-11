@@ -44,6 +44,27 @@ class CasinoFeature(models.Model):
      
      def __str__(self):
          return f"{self.casino.name} - {self.text}"
+    
+    
+class CasinoReview(models.Model):
+     casino = models.OneToOneField("Casino", on_delete=models.CASCADE, \
+          related_name="review")
+     title = models.CharField(max_length=255, default="Review")
+     slug = models.SlugField(unique=True)
+     
+     content_markdown = models.TextField(blank=True)
+     content_blocks = models.JSONField(default=list, blank=True)
+     
+     created_at = models.DateTimeField(auto_now_add=True)
+     updated_at = models.DateTimeField(auto_now=True)
+     
+     # class Meta:
+     #      verbose_name = "Casino Review"
+     #      verbose_name_plural = "Casinos Review"
+          
+     def __str__(self):
+         return f"{self.casino.name} Review"
+     
 	
 
 class Bonus(models.Model):
@@ -64,6 +85,10 @@ class Bonus(models.Model):
      terms_url = models.URLField(blank=True, null=True)
      is_exclusive = models.BooleanField(default=False)
      
+     class Meta:
+          verbose_name = "Bonus"
+          verbose_name_plural = "Bonuses"
+     
      def __str__(self):
          return f"{self.get_bonus_type_display()} - {self.amount}"
 
@@ -79,6 +104,10 @@ class Slots(models.Model):
      meta_description = models.TextField(blank=True, null=True)
      slug = models.SlugField(unique=True, blank=True)
      
+     class Meta:
+          verbose_name = "Slot"
+          verbose_name_plural = "Slots"
+     
      def __str__(self):
          return self.name
      
@@ -87,20 +116,12 @@ class CasinoSlots(models.Model):
      casino = models.ForeignKey(Casino, on_delete=models.CASCADE)
      slot = models.ForeignKey(Slots, on_delete=models.CASCADE)
      
-     def __str__(self):
-         return f"{self.casino.name} - {self.slot.name}"
-
-
-class Review(models.Model):
-     casino = models.ForeignKey(Casino, on_delete=models.CASCADE, \
-          related_name='reviews')
-     author = models.CharField(max_length=255)
-     rating = models.IntegerField()
-     content = models.TextField()
-     created_at = models.DateTimeField(auto_now_add=True)
+     class Meta:
+          verbose_name = "Casino slot"
+          verbose_name_plural = "Casino slots"
      
      def __str__(self):
-         return f"{self.author} - {self.rating}/5"
+         return f"{self.casino.name} - {self.slot.name}"
 
 
 class Guide(models.Model):

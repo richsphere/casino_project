@@ -26,6 +26,8 @@ sitemaps = {
     'guides': GuideSitemap
 }
 
+admin.site.site_header = "Admin Center"
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='sitemap'),

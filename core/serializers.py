@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Guide, Casino, Bonus, CasinoFeature
+from .models import Guide, Casino, Bonus, CasinoFeature, CasinoReview
 
 
 class GuideSerializer(serializers.ModelSerializer):
@@ -23,8 +23,14 @@ class CasinoFeatureSerializer(serializers.ModelSerializer):
           model = CasinoFeature
           fields = ['text']
           
+class CasinoReviewSerializer(serializers.ModelSerializer):
+     class Meta:
+          model = CasinoReview
+          fields = ["title", "content_markdown", "content_blocks"]
+          
 class CasinoSerializer(serializers.ModelSerializer):
      features = CasinoFeatureSerializer(many=True, read_only=True)
+     review = CasinoReviewSerializer(read_only=True)
      class Meta:
           model = Casino
           fields = '__all__'
